@@ -1368,6 +1368,16 @@ and dump_duplicate_symbols =
     "Dump all symbols with the same name that are defined in more than one file."
 
 
+and dump_interproc =
+  CLOpt.mk_bool ~long:"dump_interproc"
+    "Dump to stdout during interproc"
+
+
+and dump_rearrange =
+  CLOpt.mk_bool ~long:"dump_rearrange"
+    "Dump to stdout during rearrange"
+
+
 and eradicate_condition_redundant =
   CLOpt.mk_bool ~long:"eradicate-condition-redundant" "Condition redundant warnings"
 
@@ -2998,6 +3008,10 @@ and differential_filter_set = !differential_filter_set
 and dotty_cfg_libs = !dotty_cfg_libs
 
 and dump_duplicate_symbols = !dump_duplicate_symbols
+
+and dump_interproc = !dump_interproc
+
+and dump_rearrange = !dump_rearrange
 
 and eradicate_condition_redundant = !eradicate_condition_redundant
 

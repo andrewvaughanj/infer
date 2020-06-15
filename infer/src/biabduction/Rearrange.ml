@@ -11,6 +11,8 @@ open! IStd
 (** Re-arrangement and extension of structures with fresh variables *)
 
 module L = Logging
+module F = Format
+module P = Prop
 
 let list_product l1 l2 =
   let l1' = List.rev l1 in
@@ -1367,6 +1369,11 @@ let rearrange ?(report_deref_errors = true)
   L.d_ln () ;
   L.d_strln "Prop:" ;
   Prop.d_prop prop ;
+  if Config.dump_rearrange then (
+    F.printf "START: rearrange\n";
+    F.printf "@[%a@]\n" (P.pp_prop Pp.text) prop;
+    F.printf "END  : rearrange\n";
+    );
   L.d_ln () ;
   L.d_ln () ;
   if report_deref_errors then

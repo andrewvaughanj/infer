@@ -285,6 +285,10 @@ val dotty_cfg_libs : bool
 
 val dump_duplicate_symbols : bool
 
+val dump_interproc : bool
+
+val dump_rearrange : bool
+
 val eradicate_condition_redundant : bool
 
 val eradicate_field_over_annotated : bool

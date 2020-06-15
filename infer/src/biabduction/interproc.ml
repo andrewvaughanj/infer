@@ -13,6 +13,7 @@ module Hashtbl = Caml.Hashtbl
 
 module L = Logging
 module F = Format
+module P = Prop
 
 (** A node with a number of visits *)
 type visitednode = {node: Procdesc.Node.t; visits: int}
@@ -382,10 +383,17 @@ let forward_tabulate ({InterproceduralAnalysis.proc_desc; err_log; tenv; _} as a
       (* precondition leading to error, if any *)
       State.get_normalized_pre (fun _tenv -> Abs.abstract_no_symop analysis_data)
     in
+    let error = Exceptions.recognize_exception exn in
     ( match pre_opt with
     | Some pre ->
         L.d_strln "Precondition:" ;
         Prop.d_prop pre ;
+        if Config.dump_interproc then (
+          F.printf "START: interproc\n";
+          F.printf "%s\n" error.issue_type.unique_id;
+          F.printf "@[%a@]\n" (P.pp_prop Pp.text) pre;
+          F.printf "END  : interproc\n";
+          );
         L.d_ln ()
     | None ->
         () ) ;
