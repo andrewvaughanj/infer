@@ -373,6 +373,9 @@ let do_symbolic_execution ({InterproceduralAnalysis.tenv; _} as analysis_data) p
   State.mark_execution_end node ;
   pset
 
+let append ~lines path =
+  let append_lines out_channel = Out_channel.output_lines out_channel lines in
+    Out_channel.with_file ~append:true ~fail_if_exists:false ~f:append_lines path
 
 let forward_tabulate ({InterproceduralAnalysis.proc_desc; err_log; tenv; _} as analysis_data)
     proc_cfg summary wl =
@@ -389,10 +392,17 @@ let forward_tabulate ({InterproceduralAnalysis.proc_desc; err_log; tenv; _} as a
         L.d_strln "Precondition:" ;
         Prop.d_prop pre ;
         if Config.dump_interproc then (
-          F.printf "START: interproc\n";
-          F.printf "%s\n" error.issue_type.unique_id;
-          F.printf "@[%a@]\n" (P.pp_prop Pp.text) pre;
-          F.printf "END  : interproc\n";
+          let source_name = (Procname.to_filename pname) in
+          let proc_name = (Procname.to_string pname) in
+          let text_pp = P.pp_prop {Pp.text with opt= SIM_WITH_TYP} in
+          let str_fp = F.asprintf "@[%a@]" text_pp pre in
+          let log_file = Printf.sprintf "infer-out/%s__%s.dump" source_name proc_name in
+          (
+          append log_file ~lines:(String.split ~on:'\n' "START: interproc");
+          append log_file ~lines:(String.split ~on:'\n' (Printf.sprintf "%s" error.issue_type.unique_id));
+          append log_file ~lines:(String.split ~on:'\n' str_fp);
+          append log_file ~lines:(String.split ~on:'\n' "END:   interproc");
+          )
           );
         L.d_ln ()
     | None ->

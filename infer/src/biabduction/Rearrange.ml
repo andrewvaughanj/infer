@@ -1346,6 +1346,9 @@ let check_call_to_objc_block_error tenv pdesc prop fun_exp loc =
         let err_desc = Localise.error_desc_set_bucket err_desc_nobuckets Localise.BucketLevel.b1 in
         raise (Exceptions.Null_dereference (err_desc, __POS__))
 
+let append ~lines path =
+  let append_lines out_channel = Out_channel.output_lines out_channel lines in
+    Out_channel.with_file ~append:true ~fail_if_exists:false ~f:append_lines path
 
 (** [rearrange lexp prop] rearranges [prop] into the form [prop' * lexp|->strexp:typ]. It returns an
     iterator with [lexp |-> strexp: typ] as current predicate and the path (an [offsetlist]) which
@@ -1370,10 +1373,18 @@ let rearrange ?(report_deref_errors = true)
   L.d_strln "Prop:" ;
   Prop.d_prop prop ;
   if Config.dump_rearrange then (
-    F.printf "START: rearrange\n";
-    F.printf "@[%a@]\n" (P.pp_prop Pp.text) prop;
-    F.printf "END  : rearrange\n";
-    );
+      let pname = Procdesc.get_proc_name pdesc in
+      let source_name = (Procname.to_filename pname) in
+      let proc_name = (Procname.to_string pname) in
+      let text_pp = P.pp_prop {Pp.text with opt= SIM_WITH_TYP} in
+      let str_fp = F.asprintf "@[%a@]" text_pp prop in
+      let log_file = Printf.sprintf "infer-out/%s__%s.dump" source_name proc_name in
+      (
+          append log_file ~lines:(String.split ~on:'\n' "START: rearrange");
+          append log_file ~lines:(String.split ~on:'\n' str_fp);
+          append log_file ~lines:(String.split ~on:'\n' "END:   rearrange");
+      )
+      );
   L.d_ln () ;
   L.d_ln () ;
   if report_deref_errors then
