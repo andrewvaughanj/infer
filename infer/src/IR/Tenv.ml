@@ -166,14 +166,16 @@ let store_debug_file_for_source source_file tenv =
 
 
 let store_type_env_for_source source_file tenv =
-  (* pathed filename *)
+  (* results dir *)
+  let results_dir = Config.results_dir in
+  (* pathed filename to source file *)
   let source_fname = DB.Results_dir.path_to_filename (DB.Results_dir.Abs_source_dir source_file) [] in
   (* as string *)
   let source_str = DB.filename_to_string source_fname in
   (* basename *)
   let source_name = Filename.basename source_str in
   (* log name *)
-  let log_name = Printf.sprintf "infer-out/%s.tenv.dump" source_name in
+  let log_name = Printf.sprintf "%s/%s.tenv.dump" results_dir source_name in
   (* output channel *)
   let out_channel = Out_channel.create log_name in
   (* formatter *)

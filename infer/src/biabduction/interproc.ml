@@ -392,11 +392,13 @@ let forward_tabulate ({InterproceduralAnalysis.proc_desc; err_log; tenv; _} as a
         L.d_strln "Precondition:" ;
         Prop.d_prop pre ;
         if Config.dump_interproc then (
+          (* results dir *)
+          let results_dir = Config.results_dir in
           (* description from routine *)
           let pdesc = ProcCfg.Exceptional.proc_desc proc_cfg in
           (* source file from routine description *)
           let source_file = (Procdesc.get_loc pdesc).file in
-          (* pathed filename *)
+          (* pathed filename to source file *)
           let source_fname = DB.Results_dir.path_to_filename (DB.Results_dir.Abs_source_dir source_file) [] in
           (* as string *)
           let source_str = DB.filename_to_string source_fname in
@@ -411,7 +413,7 @@ let forward_tabulate ({InterproceduralAnalysis.proc_desc; err_log; tenv; _} as a
           (* as string *)
           let str_fp = F.asprintf "@[%a@]" text_pp pre in
           (* log name *)
-          let log_file = Printf.sprintf "infer-out/%s__%s.dump" source_name proc_name in
+          let log_file = Printf.sprintf "%s/%s__%s.dump" results_dir source_name proc_name in
           (
           append log_file ~lines:(String.split ~on:'\n' "START: interproc");
           append log_file ~lines:(String.split ~on:'\n' (Printf.sprintf "%s" error.issue_type.unique_id));

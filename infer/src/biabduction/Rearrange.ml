@@ -1373,9 +1373,11 @@ let rearrange ?(report_deref_errors = true)
   L.d_strln "Prop:" ;
   Prop.d_prop prop ;
   if Config.dump_rearrange then (
+      (* results dir *)
+      let results_dir = Config.results_dir in
       (* source file from routine description *)
       let source_file = (Procdesc.get_loc pdesc).file in
-      (* pathed filename *)
+      (* pathed filename to source file *)
       let source_fname = DB.Results_dir.path_to_filename (DB.Results_dir.Abs_source_dir source_file) [] in
       (* as string *)
       let source_str = DB.filename_to_string source_fname in
@@ -1390,7 +1392,7 @@ let rearrange ?(report_deref_errors = true)
       (* as string *)
       let str_fp = F.asprintf "@[%a@]" text_pp prop in
       (* log name *)
-      let log_file = Printf.sprintf "infer-out/%s__%s.dump" source_name proc_name in
+      let log_file = Printf.sprintf "%s/%s__%s.dump" results_dir source_name proc_name in
       (
           append log_file ~lines:(String.split ~on:'\n' "START: rearrange");
           append log_file ~lines:(String.split ~on:'\n' str_fp);
