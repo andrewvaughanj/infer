@@ -1370,13 +1370,16 @@ and dump_duplicate_symbols =
 
 and dump_interproc =
   CLOpt.mk_bool ~long:"dump_interproc"
-    "Dump to stdout during interproc"
+    "Dump during interproc"
 
 
 and dump_rearrange =
   CLOpt.mk_bool ~long:"dump_rearrange"
-    "Dump to stdout during rearrange"
+    "Dump during rearrange"
 
+and dump_types =
+  CLOpt.mk_bool ~long:"dump_types"
+    "Dump tenv"
 
 and eradicate_condition_redundant =
   CLOpt.mk_bool ~long:"eradicate-condition-redundant" "Condition redundant warnings"
@@ -3012,6 +3015,8 @@ and dump_duplicate_symbols = !dump_duplicate_symbols
 and dump_interproc = !dump_interproc
 
 and dump_rearrange = !dump_rearrange
+
+and dump_types = !dump_types
 
 and eradicate_condition_redundant = !eradicate_condition_redundant
 

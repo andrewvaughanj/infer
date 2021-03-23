@@ -165,6 +165,17 @@ let store_debug_file_for_source source_file tenv =
   store_debug_file tenv tenv_filename_of_source_file
 
 
+let store_type_env_for_source source_file tenv =
+  let source_fname = DB.Results_dir.path_to_filename (DB.Results_dir.Abs_source_dir source_file) [] in
+  let source_str = DB.filename_to_string source_fname in
+  let rel_path = Filename.basename source_str in
+  let debug_filename = Printf.sprintf "infer-out/%s.tenv.dump" rel_path in
+  let out_channel = Out_channel.create debug_filename in
+  let fmt = Format.formatter_of_out_channel out_channel in
+  pp fmt tenv ;
+  Out_channel.close out_channel
+
+
 let store_to_filename tenv tenv_filename =
   Serialization.write_to_file tenv_serializer tenv_filename ~data:tenv ;
   if Config.debug_mode then store_debug_file tenv tenv_filename

@@ -20,6 +20,8 @@ val load : SourceFile.t -> t option
 
 val store_debug_file_for_source : SourceFile.t -> t -> unit
 
+val store_type_env_for_source : SourceFile.t -> t -> unit
+
 val read : DB.filename -> t option
 (** read and return a type environment from the given file *)
 
