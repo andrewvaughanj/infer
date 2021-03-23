@@ -398,6 +398,11 @@ let forward_tabulate ({InterproceduralAnalysis.proc_desc; err_log; tenv; _} as a
           let pdesc = ProcCfg.Exceptional.proc_desc proc_cfg in
           (* source file from routine description *)
           let source_file = (Procdesc.get_loc pdesc).file in
+          (*
+           * WARNING: THIS IS NOT GOING TO WORK FOR C++!
+           *
+           * Overloaded routines in the same file *will* overwrite each other!
+           *)
           (* pathed filename to source file *)
           let source_fname = DB.Results_dir.path_to_filename (DB.Results_dir.Abs_source_dir source_file) [] in
           (* as string *)
