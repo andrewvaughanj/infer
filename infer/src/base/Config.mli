@@ -289,7 +289,7 @@ val dump_interproc : bool
 
 val dump_rearrange : bool
 
-val dump_types : bool
+val dump_tenv : bool
 
 val eradicate_condition_redundant : bool
 
