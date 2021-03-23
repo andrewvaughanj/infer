@@ -175,7 +175,7 @@ let store_type_env_for_source source_file tenv =
   (* basename *)
   let source_name = Filename.basename source_str in
   (* log name *)
-  let log_name = Printf.sprintf "%s/%s.tenv.dump" results_dir source_name in
+  let log_name = Printf.sprintf "%s/%s.dump.tenv" results_dir source_name in
   (* output channel *)
   let out_channel = Out_channel.create log_name in
   (* formatter *)

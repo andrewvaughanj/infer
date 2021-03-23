@@ -1397,7 +1397,7 @@ let rearrange ?(report_deref_errors = true)
       (* as string *)
       let str_fp = F.asprintf "@[%a@]" text_pp prop in
       (* log name *)
-      let log_file = Printf.sprintf "%s/%s__%s.dump" results_dir source_name proc_name in
+      let log_file = Printf.sprintf "%s/%s__%s.dump.foot" results_dir source_name proc_name in
       (
           append log_file ~lines:(String.split ~on:'\n' "START: rearrange");
           append log_file ~lines:(String.split ~on:'\n' str_fp);

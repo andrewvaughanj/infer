@@ -418,7 +418,7 @@ let forward_tabulate ({InterproceduralAnalysis.proc_desc; err_log; tenv; _} as a
           (* as string *)
           let str_fp = F.asprintf "@[%a@]" text_pp pre in
           (* log name *)
-          let log_file = Printf.sprintf "%s/%s__%s.dump" results_dir source_name proc_name in
+          let log_file = Printf.sprintf "%s/%s__%s.dump.foot" results_dir source_name proc_name in
           (
           append log_file ~lines:(String.split ~on:'\n' "START: interproc");
           append log_file ~lines:(String.split ~on:'\n' (Printf.sprintf "%s" error.issue_type.unique_id));
